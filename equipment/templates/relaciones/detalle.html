@@ -1,0 +1,65 @@
+{% load static %}
+<hr>
+<div>
+    {% if equipment.imagen %}
+    <img src="{{equipment.imagen.url}}"  WIDTH="75%" height="45%" class="card-img-top" alt="...">
+    {% endif %}
+    <hr>
+
+    <div class="card-body ">
+        <p><strong>Equipo: </strong>{{equipment.nombre}}</p>
+        
+        {% if equipment.get_filter_activities %}
+            <p>
+                <th>
+                    <strong>Actividades: </strong>
+                </th>
+                <form action="" method="post" target="_blank">{% csrf_token %}
+                    <select name="select_activity" id="select_activity">
+                        {% for actividades in equipment.get_filter_activities %}
+                        <option value="{{actividades.id}}"> {{actividades.nombre}}</option>
+                        <br>
+                        {% endfor %}
+                    </select>
+                        <input type="submit" name="edit_activity" value="Ver"/>
+                </form>
+                {% endif %}
+                
+            </p>
+        
+            {% if equipment.get_see_parts %}
+            <p>
+                <th>
+                    <strong>
+                        Partes: 
+                    </strong>
+                </th>
+                <form action="" method="post" target="_blank">{% csrf_token %}
+                    <select name="select_part" id="select_part">
+                        {% for partes in equipment.get_see_parts %}
+                        <option value="{{partes.id}}">{{partes.nombre}}</option>
+                        <br>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" name="edit_part" value="Ver" />
+                </form>
+                {% endif %}
+            </p>          
+
+        <p><strong>Caracteristicas: </strong>{{equipment.caracteristicas}}</p>
+
+        {% if equipment.voltage %}
+            <p><strong>voltage: </strong>{{equipment.voltage}}V</p>
+        {% else %}
+            <p> - </p>
+        {% endif %}
+
+        {% if equipment.potencia %}
+            <p><strong>potencia: </strong>{{equipment.potencia}}KW</p>
+        {% else %}
+            <p> - </p>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<strong>Acciones</strong>

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %} 
+{% block title %} Proximas Actividades {% endblock %}
+
+{% block contenido %} 
+<form class="input" method="GET">
+
+  <div class="input-group">
+    <input class="form-control bg-light border-0 small" name="buscar" type="search" placeholder="Buscar..." aria-label="buscar" value="{{ request.GET.buscar }}" title="Buscar Proxima actividad">
+    <div class="input-group-append">
+      <button class="btn btn-outline-info" type="submit" title="Buscar">
+        <img src="{% static '../static/assets/browser.svg' %}">
+      </button>
+    </div>
+  </div>
+</form>
+
+<div class="card">
+      <h4 id="margen" class="card-title">Proximas Actividades</h4>
+      <div>
+        {% include 'actividades/paginator.html' %}
+      </div>
+      
+      <table class="table table-striped">
+        <thead style="background: aqua" >
+          <tr style="text-align: center">
+            <th scope="col">Nombre</th>
+            <th scope="col">Parte</th>
+            <th scope="col">Equipo</th>
+            <th scope="col">Frecuencia</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Tiempo_Estimado</th>
+            <th scope="col">Ult_Fecha</th>
+            <th scope="col">Prox_Fecha</th>
+            <th scope="col">Anexos</th>
+            {% comment %} <th scope="col">Finalizado</th> {% endcomment %}
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for actividades in actividades %}
+          <tr style="text-align: center">
+            <td><b><a href="#offcanvasExample{{actividades.id}}" type="button" data-bs-toggle="offcanvas" aria-controls="offcanvasExample{{actividades.id}}">{{actividades.nombre}}</a></b></td>
+            <td class="align-top">
+              {% if actividades.cantidad_partes %}
+              <select name="" id="">
+              {% for parte in actividades.cantidad_partes %}
+              <option value="{{parte.id}}">{{parte.parte}} ({{parte.cantidad}} {{parte.parte.unidades}})</option>
+              {% endfor %}
+            </select>
+            {% endif %}
+            </td> 
+            <td>{{actividades.equipo}}</td>
+            <td>{{actividades.frecuencia}}</td>
+            <td>{{actividades.descripcion|linebreaks|truncatechars:100}}</td>
+            <td>{{actividades.tiempo_estimado}}</td>
+            <td>{{actividades.ult_Fecha}}</td>
+            <td>{{actividades.prox_Fecha}}</td>
+            <td>
+              {% if actividades.anexos %}
+              <a href="../imagenes/{{actividades.anexos}}" download="Doc PDF"><img src="{% static '../static/assets/download.svg' %}"></a>
+              {% endif %}
+            </td>
+            {% comment %} <td>  
+              {% if actividades.finalizado %}
+              <a title="Tarea Finalizada"><img src="{% static '../static/assets/finish.svg' %}"></a>
+              {% else %}
+              <a title="Tarea sin empezar"><img src="{% static '../static/assets/not_finish.svg' %}"></a>
+              {% endif %}
+            </td> {% endcomment %}
+            </div>
+                
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+<div class="card-footer text-muted">
+    #Proximas Actividades
+</div>
+
+<!--open Offcanvas  -->
+{% for actividades in actividades %}
+<div style="width: 35%;" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample{{actividades.id}}" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasExampleLabel">Detalles</h5>
+  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+<div class="offcanvas-body">
+  {% include 'actividades/detail.html' with actividades=actividades %}
+  <div class="dropdown mt-3">
+    <a class="btn" href="{% url 'editar_actividades' actividades.id %}" role="button" title="Editar"><img src="{% static '../static/assets/edit.svg' %}"></a>
+    
+    <a class="btn" href="{% url 'anadir_reporte' actividades.id %}" role="button" title="Agregar Reporte"><img src="{% static '../static/assets/report.png' %}"></a>
+  </div>
+</div>
+</div>
+
+<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop{{actividad.id}}" aria-labelledby="offcanvasTopLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasTopLabel">Resultado</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+<div class="offcanvas-body">
+  {% include 'actividades/detalle.html' with reportes=reportes %}
+  </div>
+</div>
+{% endfor %}
+      <!--end Offcanvas  -->
+{% endblock %}

@@ -1,0 +1,13 @@
+<div class="col col-sm-10 col-md-10 col-lg-8 col-xl-7"> 
+ <form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+
+    {{ formulario.media }}
+    {{ formulario.as_p }}
+      
+    <input class="btn btn-info" type="submit" value="Guardar cambios">
+    &nbsp;
+    <a class="btn btn-danger" href="{% url 'partes' %}" role="button">Cancelar</a>
+
+  </form>
+</div>

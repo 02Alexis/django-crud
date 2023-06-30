@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.margen{
+    width: 100%; 
+    margin-top: 20px;
+}
+
+#margen{
+    width: 100%; 
+    margin-top: 20px;
+}
+
+.icon {
+    float: right;
+}
+#digitalClock{
+    display: flex;
+    color: #fff;
+    font-size: 2em;
+    margin-top: 5px;
+    /* posicionar a la izquierda */
+    position: absolute;
+    right: 20px;
+    height: 200px;
+}

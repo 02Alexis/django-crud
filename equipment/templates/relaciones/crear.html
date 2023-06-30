@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} Crear nuevo Equipo {% endblock %}
+
+{% block contenido %} 
+
+<div class="container-fluid h-100 text-dark m-0">
+  <div class="row justify-content-center align-items-center">
+    Crear Equipo
+  </div>
+      
+  <div class="row justify-content-center align-items-center h-100">
+      {% include 'relaciones/form.html' %}
+  </div>
+</div>
+
+{% endblock %}

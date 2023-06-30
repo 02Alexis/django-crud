@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} Crear nuevo reporte {% endblock %}
+
+{% block contenido %} 
+
+<div class="container-fluid h-100 text-dark m-0">
+    <div class="row justify-content-center align-items-center">
+        Crear Reporte
+    </div>
+    
+    <div class="row justify-content-center align-items-center h-100">
+      {% include 'reporte/form.html' %}
+    </div>
+  </div>
+
+{% endblock %}

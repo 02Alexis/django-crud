@@ -1,0 +1,51 @@
+{% load static %}
+<body>
+    <h2>Reportes</h2>
+    <h3>Cantidad de reportes: {{ count }}</h3>
+
+    <table border="1" width="100%" height="50%">
+        <thead>
+            <tr style="text-align: center">
+              <th scope="col">Actividad</th>
+              <th scope="col">Inicio</th>
+              <th scope="col">Fin</th>
+              <th scope="col">Reporte</th>
+              <th scope="col">Responsable</th>
+              <th scope="col">Costos adicionales</th>
+              <th scope="col">Nota/costos</th>
+              <th scope="col">Imagen</th>
+              <th scope="col">Tipo/mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reporte in reportes %}
+            <tr style="text-align: center">
+                <td class="align-top">
+                    <select name="" id="">
+                        {% for actividad in reporte.actividad.all %}
+                        <option value="{{actividad.id}}">{{actividad.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>{{reporte.inicio}}</td>
+                <td>{{reporte.fin}}</td>
+                <td>{{reporte.reporte|wordwrap:50|linebreaks}}</td>
+                <td>{{reporte.responsable}}</td>
+                <td>
+                    {% if reporte.costos_adicionales %}
+                    ${{reporte.costos_adicionales}}
+                    {% endif %}
+                </td>
+                <td>{{reporte.nota_costos}}</td>
+                <td>
+                    {% if reporte.imagen %}
+                    <img src="{{reporte.imagen.url}}" height="100" />
+                    {% endif %}
+                </td>
+                <td>{{reporte.tipo_mantenimiento}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        
+</body>

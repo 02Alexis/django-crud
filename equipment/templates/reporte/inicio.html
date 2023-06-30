@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Reporte de actividades {% endblock %}
+
+{% block contenido %} 
+{% load humanize %}
+
+<form class="input" method="GET">
+
+  <div class="input-group">
+    <input class="form-control bg-light border-0 small" name="buscar" type="search" placeholder="Buscar..." aria-label="buscar" value="{{ request.GET.buscar }}" title="Introduce nombre de actividad">
+    <div class="input-group-append">
+      <button class="btn btn-outline-info" type="submit" title="Buscar">
+        <img src="{% static '../static/assets/browser.svg' %}">
+      </button>
+    </div>
+  </div>
+</form>
+
+  
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-info" href="{% url 'crear_reporte' %}" role="button">Agregar Reporte</a>
+    </div>
+        <h4 id="margen" class="card-title">Reporte de Actividades</h4>
+      <div style="text-align: right">
+        <a class="btn" href="{% url 'generar_reporte_actividades' %}" role="button"><img src="{% static '../static/assets/pdf.png' %}"></a>
+      </div>
+      <br>
+      
+        <table class="table table-striped">
+            <thead style="background: aqua" >
+              <tr style="text-align: center">
+                <th scope="col">Actividad</th>
+                <th scope="col">Inicio</th>
+                <th scope="col">Fin</th>
+                <th scope="col">Reporte</th>
+                <th scope="col">Responsable</th>
+                <th scope="col">Costos adicionales</th>
+                <th scope="col">Nota/costos</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Tipo/mantenimiento</th>
+                <th scope="col">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for reporte in reportes %}
+              <tr style="text-align: center">
+                <td class="align-top">
+                    <select name="" id="">
+                      {% for actividad in reporte.actividad.all %}
+                        <option value="{{actividad.id}}">{{actividad.nombre}}</option>
+                      {% endfor %}
+                    </select>
+                </td>
+                <td>{{reporte.inicio}}</td>
+                <td>{{reporte.fin}}</td>
+                <td>{{reporte.reporte|linebreaks|truncatechars:80}}</td>
+                <td>{{reporte.responsable}}</td>
+                <td>
+                  {% if reporte.costos_adicionales %}
+                    ${{reporte.costos_adicionales|intcomma}}
+                  {% endif %}
+                </td>
+                <td>{{reporte.nota_costos}}</td>
+                <td>
+                  {% if reporte.imagen %}
+                  <img src="{{reporte.imagen.url}}" height="100" />
+                  {% endif %}
+                </td>
+                <td>{{reporte.tipo_mantenimiento}}</td>
+                <td><a href="#offcanvas{{reporte.id}}" role="button" aria-controls="offcanvas{{reporte.id}}" data-bs-toggle="offcanvas"><img src="{% static '../static/assets/detail.svg' %}"></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          
+    </div>
+    <div class="card-footer text-muted">
+        #Reporte de Actividades
+    </div>
+
+<!--open Offcanvas  -->
+{% for reporte in reportes %}
+<div style="width: 35%;" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas{{reporte.id}}" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Detalles</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    {% include 'reporte/detalle.html' with reporte=reporte %}
+    <div class="dropdown mt-3">
+      <a class="btn" href="{% url 'editar_reporte' reporte.id %}" role="button" title="Editar"><img src="{% static '../static/assets/edit.svg' %}"></a>
+    </div>
+  </div>
+</div>
+<!--end Offcanvas  -->
+{% endfor %}
+
+{% endblock %}
+
+{% comment %} {% for reporte in reportes %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas{{reporte.id}}" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Detalles</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    {% include 'reporte/detalle.html' with reporte=reporte %}
+    <div class="dropdown mt-3">
+      <a class="btn" href="{% url 'editar_reporte' reporte.id %}" role="button" title="Editar"><img src="{% static '../static/assets/edit.svg' %}"></a>
+    </div>
+  </div>
+</div> {% endcomment %}

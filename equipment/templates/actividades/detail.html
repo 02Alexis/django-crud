@@ -1,0 +1,40 @@
+{% load static %}
+<div>
+    <div class="card-body ">
+        <p><strong>Nombre: </strong>{{actividades.nombre}}</p>
+        {% if actividades.cantidad_partes %}
+        <p>
+            <th>
+                <strong>
+                    Partes y Cantidad: 
+                </strong>
+            </th>
+            <select name="" id="">
+                {% for parte in actividades.cantidad_partes %}
+                <option value="{{parte.id}}">
+                    {{parte.parte}} ({{parte.cantidad}} {{parte.parte.unidades}})
+                </option>
+                {% endfor %}
+            </select>
+            {% endif %}
+        </p>
+        <p><strong>Equipo: </strong>{{actividades.equipo}}</p>
+        <p><strong>Frecuencia: </strong> {{actividades.frecuencia}}</p>
+        <p><strong>Descripción: </strong>{{actividades.descripcion|linebreaks}}</p>
+        <p><strong>Tiempo_Estimado: </strong>{{actividades.tiempo_estimado}}</p>
+        <p><strong>Ult_Fecha: </strong>{{actividades.ult_Fecha}}</p>
+        <p><strong>Prox_Fecha: </strong>{{actividades.prox_Fecha}}</p>
+        {% if actividades.anexos %}
+        <p><strong>Anexos: </strong>{{actividades.anexos}}</p>
+        {% endif %}
+        {% comment %} <p><strong>Finalizado:</strong>
+            {% if actividades.finalizado %}
+            <a title="Tarea Finalizada"><img src="{% static '../static/assets/finish.svg' %}"></a>
+            {% else %}
+            <a title="Tarea sin empezar"><img src="{% static '../static/assets/not_finish.svg' %}"></a>
+            {% endif %}
+        </p> {% endcomment %}
+    </div>
+</div>
+<strong>Acciones</strong>
+

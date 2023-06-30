@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        var j = $.noConflict();
+    </script>  -->
+    <script src="../static/js/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script>
+        var $ = jQuery.noConflict();
+    </script>
+
+  {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+    
+    <link rel="shortcut icon" href="{% static "../static/img/favicon.ico" %}" />  
+    {# Include Bootstrap 4 and jQuery #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static '../static/css/styles.css' %}">
+ 
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#0099CC;">
+
+    <div class="collapse navbar-collapse container">
+       <img src="{% static '../static/img/logo_nova.png' %}" alt="" width="75" height="54" />
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-link active {% if request.path == '/' %} active {% endif %} px-lg-2"> 
+              <a id="color" class="nav-link" href="{% url 'prox_actividades' %}"><img src="{% static '../static/assets/next_activity.png' %}"> Prox Actividades</a>
+            </li>
+
+            <li class="nav-link active {% if request.path == '/' %} active {% endif %} px-lg-2">
+              <a id="color" class="nav-link" href="{% url 'actividades' %}"><img src="{% static '../static/assets/calendar.png' %}"> Actividades</a>
+            </li>
+
+            <li class="nav-link active {% if request.path == '/' %} active {% endif %} px-lg-2">
+              <a id="color" class="nav-link" href="{% url 'equipos' %}"><img src="{% static '../static/assets/equipment.png' %}"> Equipos</a>
+            </li>
+
+            <li class="nav-link active {% if request.path == '/' %} active {% endif %} px-lg-2">
+              <a id="color" class="nav-link" href="{% url 'partes' %}"><img src="{% static '../static/assets/part.svg' %}"> Partes</a>
+            </li>
+
+            <li class="nav-link active {% if request.path == '/' %} active {% endif %} px-lg-2">
+              <a id="color" class="nav-link" href="{% url 'reporte' %}"><img src="{% static '../static/assets/report.png' %}"> Reporte de Actividades</a>
+            </li>
+              <li>
+                <div class="clock">
+                  <div class="hour">
+                      <div class="hr" id="hr"></div>
+                  </div>
+                  <div class="min">
+                      <div class="mn" id="mn"></div>
+                  </div>
+                  <div class="sec">
+                      <div class="sc" id="sc"></div>
+                  </div>
+                </div>
+          
+                <div id="digitalClock">
+                    <div id="hour"></div>
+                    <div id="minutes"></div>
+                    <div id="seconds"></div>
+                    <div id="ampm"></div>
+                </div>
+              </li>
+          </ul>
+          
+        </div>
+    </div>
+  </nav>
+
+
+      <div class="container">
+        {% include 'messages.html' %}
+      </div>
+      <div class="container-fluid">
+        <script>
+            function cerrarse(){
+                window.close()
+            }
+        </script>
+      </div>
+
+          <div class="margen">
+          {% block contenido %} 
+
+          {% endblock %}
+          </div>
+   
+      {% comment %} bloque de js {% endcomment %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $("#add-item").on("click", addItem);
+      $("#remove-item").on("click", removeItem);
+  });
+
+  function addItem() {
+      // Clonamos la ultima fila de la tabla
+      var newElement = $(".table tr:last").clone(true);
+      // Necesitamos aumentar en 1 el total de los formularios
+      // por eso obtenemos el total actual, debería ser 4
+      var table = document.getElementById("form_table");
+      var total = table.rows.length;
+      
+      // Cuando se usan formsets, los elementos del formulario 
+      // son enumerados (id_item-0-rate, id_item-1-rate, etc.)              
+      // entonces necesitamos que el nuevo elemento siga esa 
+      // numeración
+      newElement.find(":input").each(function() {
+          var name = $(this).attr("name").replace("-" + (total-1) + "-", "-" + total + "-");
+          var id = "id_" + name;
+          // Seteamos los atributos y limpiamos los valores
+          $(this).attr({"name": name, "id": id}).val("");
+      });
+      // Aumentamos en 1 la cantidad de formularios en el formset
+      total++;
+      console.log(total);
+
+      // Insertamos el nueva formulario al final
+      $(".table tr:last").after(newElement);
+      // Solo mostramos el botón para quitar si hay mas de un formulario
+      if (total >= 3) {
+          $("#remove-item").show();
+      }
+  }
+
+  function removeItem() {
+      // Obtenemos el último formulario de la tabla
+      var lastElement = $(".table tr:last");
+      // Obtenemos el total de formularios ya que ahora tenemos
+      // que descontar un formulario
+      var table = document.getElementById("form_table");
+      var total = table.rows.length;
+      
+      $(lastElement).remove();
+      // Actualizamos el total de los formularios
+      total--;
+      console.log(total);
+      // Solo mostrar el botón si existe por lo menos un formulario
+      if (total < 3) {
+          $("#remove-item").hide();
+      }
+  }
+</script>
+
+<script>
+
+var message_ele = document.getElementById("message_container");
+
+setTimeout(function(){
+    message_ele.style.display = "none";
+}, 2000);
+
+</script>
+
+<script src="../static/js/delete.js"></script>
+<script src="../static/js/clock.js"></script>
+
+{% block extrajs %}
+{% endblock extrajs %}
+
+</body>
+</html>

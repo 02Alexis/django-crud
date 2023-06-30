@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Equipos {% endblock %}
+
+{% block contenido %}
+<form class="input" method="GET">
+
+  <div class="input-group">
+    <input class="form-control bg-light border-0 small" name="buscar" type="search" placeholder="Buscar..." aria-label="buscar" value="{{ request.GET.buscar }}" title="introducir nombre de equipo">
+    <div class="input-group-append">
+      <button class="btn btn-outline-info" type="submit" title="Buscar">
+        <img src="{% static '../static/assets/browser.svg' %}">
+      </button>
+    </div>
+  </div>
+</form>
+
+<hr>
+<div class="card">
+  <div class="card-header">
+    <a type="button" href="{% url 'crear' %}" class="btn btn-info">Agregar equipos</a>
+  </div>
+    <h4 id="margen" class="card-title">Equipos</h4>
+    <div>
+      {% include 'relaciones/paginator.html' %}
+    </div>
+    <div>
+
+    <table class="table table-striped">
+      <thead style="background: aqua">
+        <tr style="text-align: center">
+          <th scope="col">Nombre</th>
+          <th scope="col">Imagen</th>
+          <th scope="col">Caracteristicas</th>
+          <th scope="col">Voltaje</th>
+          <th scope="col">Potencia</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for equipment in equipment %}
+        <tr style="text-align: center">
+          <td><b><a href="#offcanvas{{equipment.id}}" role="button" aria-controls="offcanvas{{equipment.id}}" data-bs-toggle="offcanvas">{{equipment.nombre}}</a></b></td>
+          <td>
+            {% if equipment.imagen %}
+            <img src="{{equipment.imagen.url}}" height="100"/>
+            {% endif %}
+          </td>
+          <td>{{equipment.caracteristicas|wordwrap:50|linebreaks}}</td>
+          {% if equipment.voltage %}
+          <td>{{equipment.voltage}}V</td>
+           {% else %}
+            <td> - </td>
+          {% endif %}
+          {% if equipment.potencia %}
+          <td>{{equipment.potencia}}KW</td>
+           {% else %}
+            <td> - </td>
+          {% endif %}
+          <!-- <td style="text-align: center"> -->
+          </td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div>
+      {% include 'relaciones/paginator.html' %}
+    </div>
+
+  </div>
+  <div class="card-footer text-muted">
+    #Equipos
+  </div>
+
+<!--open Offcanvas  -->
+{% for equipment in equipment %}
+<div style="width: 35%;" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas{{equipment.id}}" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Detalles</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    {% include 'relaciones/detalle.html' with equipment=equipment %}
+    <div class="dropdown mt-3">
+
+      <a class="btn" href="{% url 'editar' equipment.id %}" role="button" title="Editar"><img src="{% static '../static/assets/edit.svg' %}"></a>
+
+      <a class="btn btn-sm" href="{% url 'anadir_actividad' equipment.id %}" role="button" title="Añadir Actividad"><img src="{% static '../static/assets/calendar.png' %}"></a>
+
+      <a class="btn" href="{% url 'anadir_parte' equipment.id %}" role="button" title="Añadir Parte"><img src="{% static '../static/assets/part.svg' %}"></a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<!--end Offcanvas  -->
+
+{% endblock contenido %}

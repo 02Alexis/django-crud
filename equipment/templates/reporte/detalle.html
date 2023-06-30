@@ -1,0 +1,26 @@
+
+<div>
+    {% if reporte.imagen %}
+    <img src="{{reporte.imagen.url}}"  WIDTH="75%" height="45%" class="card-img-top" alt="...">
+    {% endif %}
+    <div class="card-body">
+        <p>
+            <th>
+                <strong>Actividades: </strong>
+                <select name="" id="">
+                    {% for actividad in reporte.actividad.all %}
+                      <option value="{{actividad.id}}">{{actividad.nombre}}</option>
+                    {% endfor %}
+                  </select>
+            </th>
+        </p>
+        <p><strong>Inicio: </strong>{{reporte.inicio}}</p>
+        <p><strong>Fin: </strong>{{reporte.fin}}</p>
+        <p><strong>Reporte: </strong>{{reporte.reporte}}</p>
+        <p><strong>Responsable: </strong>{{reporte.responsable}}</p>
+        <p><strong>Costos adicionales: </strong>${{reporte.costos_adicionales}}</p>
+        <p><strong>Nota/costos: </strong>{{reporte.nota_costos}}</p>
+        <p><strong>Tipo/mantenimiento: </strong>{{reporte.tipo_mantenimiento}}</p>
+    </div>
+</div>
+<strong>Acciones</strong>

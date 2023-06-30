@@ -1,0 +1,19 @@
+
+{% for reporte in correctivos %}
+
+<p>Reporte N° {{ reporte.id }} - {{ reporte.tiempo_total }}</p>
+
+{% endfor %}
+
+<p>Total tiempo perdido en correctivos: {{ tiempo_correctivo }} </p>
+
+{% for reporte in preventivos %}
+
+<p>Reporte N° {{ reporte.id }} - {{ reporte.tiempo_total }}</p>
+
+{% endfor %}
+
+<p>Total tiempo perdido en preventivos: {{ tiempo_preventivo }} </p>
+
+
+ 

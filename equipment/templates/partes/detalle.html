@@ -1,0 +1,41 @@
+{% load humanize %}
+{% if partes.imagen %}
+<hr>
+<div>
+    <img src="{{partes.imagen.url}}"  WIDTH="75%" height="45%" class="card-img-top" alt="...">
+    <hr>
+    {% endif %}
+    <div class="card-body">
+        <p><strong>Nombre: </strong>{{partes.nombre}}</p>
+    <div>
+        <p class="align-top">
+            <th><strong>Equipo: </strong></th>
+            <select name="" id="">
+                {% for equipo in partes.equipo.all %}
+                <option value="{{equipo.id}}">{{equipo.nombre}}</option>
+                {% endfor %}
+            </select>
+        </p>
+    </div>
+    {% if partes.get_filter_rerport %}
+        <p class="align-top">
+            <th>
+                <strong>Actividades: </strong>
+            </th>
+            <select name="" id="">
+                {% for actividades in partes.get_filter_rerport %}
+                <option value="{{actividades.id}}">{{actividades.nombre}}</option>
+                <br>
+                {% endfor %}
+            </select>
+            {% endif %}
+        </p>
+        <p><strong>Unidades: </strong>{{partes.unidades}}</p>
+        <p><strong>Caracteristicas: </strong>{{partes.caracteristicas}}</p>
+        <p><strong>Proveedor: </strong>{{partes.proveedor}}</p>
+        <p><strong>Costo: $</strong>{{partes.costo|intcomma}}</p>
+        <p><strong>Subsistema: </strong>{{partes.subsistema}}</p>
+    </div>
+</div>
+<hr>
+<strong>Acciones</strong>

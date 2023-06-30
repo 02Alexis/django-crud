@@ -1,0 +1,14 @@
+<div class="col col-sm-10 col-md-10 col-lg-8 col-xl-7">
+  <form method="POST">
+      {% csrf_token %}
+
+      {{ formulario.media }}
+      {{ formulario.as_p }}
+        
+    
+      <input class="btn btn-info" type="submit" value="Guardar Cambios">
+      &nbsp;
+      <a class="btn btn-danger" href="{% url 'reporte' %}" role="button">Cancelar</a>
+    
+  </form>
+</div>

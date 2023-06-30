@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Partes {% endblock %}
+
+{% block contenido %}
+{% load humanize %}
+<form class="input" method="GET">
+
+  <div class="input-group">
+    <input class="form-control bg-light border-0 small" name="buscar" type="search" placeholder="Buscar..." aria-label="buscar" value="{{ request.GET.buscar }}" title="Buscar parte">
+    <div class="input-group-append">
+      <button class="btn btn-outline-info" type="submit" title="Buscar">
+        <img src="{% static '../static/assets/browser.svg' %}">
+      </button>
+    </div>
+  </div>
+</form>
+
+<hr>
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-info btn-block" href="{% url 'crear_partes' %}" style="font-size : 15px">Agregar Partes</a>
+    </div>
+        <h4 id="margen" class="card-title">Partes</h4>
+        
+        <table class="table table-striped">
+            <thead style="background: aqua" >
+              <tr style="text-align: center">
+                <th scope="col">Nombre</th>
+                <th scope="col">Equipo</th>
+                <th scope="col">Unidades</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Caracteristicas</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Costo</th>
+                <th scope="col">Subsistema</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for partes in partes %}
+              <tr style="text-align: center">
+                <td><b><a href="#offcanvas{{partes.id}}" role="button" aria-controls="offcanvas{{partes.id}}" data-bs-toggle="offcanvas">{{partes.nombre}}</a></b></td>
+                  <td class="align-top">
+                    <select name="" id="">
+                      {% for equipo in partes.equipo.all %}
+                        <option value="{{equipo.id}}">{{equipo.nombre}}</option>
+                      <br>
+                      {% endfor %}
+                    </select>
+                  </td> 
+                <td>{{partes.unidades}}</td>
+                <td>
+                  {% if partes.imagen %}
+                    <img src="{{partes.imagen.url}}" height="100" />
+                  {% endif %}
+                </td>
+                <td>{{partes.caracteristicas|wordwrap:50|linebreaks}}</td>
+                <td>{{partes.proveedor}}</td>
+                <td>${{partes.costo|intcomma}}</td>
+                <td>{{partes.subsistema}}</td>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+    </div>
+    <div class="card-footer text-muted">
+        #Partes
+    </div>
+
+<!--open Offcanvas  -->
+{% for partes in partes %}
+<div style="width: 35%;" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas{{partes.id}}" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Detalles</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    {% include 'partes/detalle.html' with partes=partes %}
+    <div class="dropdown mt-3">
+      
+      <a class="btn btn-sm" href="{% url 'editar_partes' partes.id %}" role="button" title="Editar"><img src="{% static '../static/assets/edit.svg' %}"></a>
+    </div>
+  </div>
+</div>
+<!--end Offcanvas  -->
+
+{% endfor %}
+
+{% endblock contenido %}

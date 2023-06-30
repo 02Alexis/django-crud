@@ -1,0 +1,11 @@
+<form enctype="multipart/form-data" method="POST">
+      {% csrf_token %}
+            
+      {{ formulario.media }}
+      {{ formulario.as_p }}
+
+      <input class="btn btn-info" type="submit" value="Registrar">
+      &nbsp;
+      <a class="btn btn-danger" href="{% url 'actividades' %}" role="button">Cancelar</a>
+  
+</form>
